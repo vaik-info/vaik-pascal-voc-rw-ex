@@ -31,7 +31,7 @@ an_object_extend_dict_list = [
                                                                    'roll': 0.03}),
 ]
 
-pascal_voc_rw_ex.write_pascal_voc_xml_dict('sample_write.xml', 'sample_write.png',
+pascal_voc_rw_ex.write_pascal_voc_xml_dict('./sample_write.xml', './sample_write.png',
                                            annotation_extend_dict={
                                                'intensity': 0.01,
                                                'bluramount': 0.02,

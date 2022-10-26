@@ -4,15 +4,20 @@ from xml.dom.minidom import parseString
 from pascal_voc_writer import Writer
 from PIL import Image
 
+
 def read_pascal_voc_xml(xml_path):
     with open(xml_path, 'r') as f:
         xml_dict = xmltodict.parse(f.read())
     return xml_dict
 
-def get_objects_dict_template(name, xmin, ymin, xmax, ymax, pose='Unspecified', truncated=0, difficult=0, extended_dict={}):
+
+def get_objects_dict_template(name, xmin, ymin, xmax, ymax, pose='Unspecified', truncated=0, difficult=0,
+                              object_extend_dict=None):
+    if object_extend_dict is None:
+        object_extend_dict = {}
     org_dict = {
         'name': name,
-        'bndbox':{
+        'bndbox': {
             'xmin': xmin,
             'ymin': ymin,
             'xmax': xmax,
@@ -22,7 +27,8 @@ def get_objects_dict_template(name, xmin, ymin, xmax, ymax, pose='Unspecified', 
         'truncated': truncated,
         'difficult': difficult,
     }
-    return {**org_dict, **extended_dict}
+    return {**org_dict, **object_extend_dict}
+
 
 def write_pascal_voc_xml_dict(output_xml_path, image_path, database='Unknown', segmented=0,
                               annotation_extend_dict=None, object_extend_dict_list=None):
@@ -41,7 +47,8 @@ def write_pascal_voc_xml_dict(output_xml_path, image_path, database='Unknown', s
         content_dict['annotation']['object'] = object_extend_dict_list
 
     xml = dicttoxml.dicttoxml(content_dict, root=False, attr_type=False, item_func=lambda x: 'object')
-    xml = xml.decode('utf-8').replace('</object></object>', '</object>').replace('<object><object>', '<object>').encode('utf-8')
+    xml = xml.decode('utf-8').replace('</object></object>', '</object>').replace('<object><object>', '<object>').encode(
+        'utf-8')
     xml_string = parseString(xml).toprettyxml()
     xml_string = '\n'.join(xml_string.split('\n')[1:])
     with open(output_xml_path, 'w') as f:

@@ -46,7 +46,7 @@ def write_pascal_voc_xml_dict(output_xml_path, image_path, database='Unknown', s
     if object_extend_dict_list is not None and len(object_extend_dict_list) > 0:
         content_dict['annotation']['object'] = object_extend_dict_list
 
-    xml = dicttoxml.dicttoxml(content_dict, root=False, attr_type=False, item_func=lambda x: 'object')
+    xml = dicttoxml.dicttoxml(content_dict, root=False, attr_type=False, item_func=lambda x: x)
     xml = xml.decode('utf-8').replace('</object></object>', '</object>').replace('<object><object>', '<object>').encode(
         'utf-8')
     xml_string = parseString(xml).toprettyxml()

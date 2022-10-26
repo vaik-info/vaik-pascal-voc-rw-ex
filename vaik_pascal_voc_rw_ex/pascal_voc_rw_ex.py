@@ -17,15 +17,15 @@ def get_objects_dict_template(name, xmin, ymin, xmax, ymax, pose='Unspecified', 
         object_extend_dict = {}
     org_dict = {
         'name': name,
+        'pose': pose,
+        'truncated': truncated,
+        'difficult': difficult,
         'bndbox': {
             'xmin': xmin,
             'ymin': ymin,
             'xmax': xmax,
             'ymax': ymax,
         },
-        'pose': pose,
-        'truncated': truncated,
-        'difficult': difficult,
     }
     return {**org_dict, **object_extend_dict}
 

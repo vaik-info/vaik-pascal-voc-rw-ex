@@ -9,12 +9,20 @@ def read_pascal_voc_xml(xml_path):
         xml_dict = xmltodict.parse(f.read())
     return xml_dict
 
-def get_objects_dict_template():
-    writer = Writer('', 0, 0)
-    writer.addObject('enter_label_name', 0, 0, 999, 999)
-    content = writer.annotation_template.render(**writer.template_parameters)
-    content_dict = xmltodict.parse(content)
-    return content_dict['annotation']['object']
+def get_objects_dict_template(name, xmin, ymin, xmax, ymax, pose='Unspecified', truncated=0, difficult=0, extended_dict={}):
+    org_dict = {
+        'name': name,
+        'bndbox':{
+            'xmin': xmin,
+            'ymin': ymin,
+            'xmax': xmax,
+            'ymax': ymax,
+        },
+        'pose': pose,
+        'truncated': truncated,
+        'difficult': difficult,
+    }
+    return {**org_dict, **extended_dict}
 
 def write_pascal_voc_xml_dict(output_xml_path, image_path, database='Unknown', segmented=0,
                               annotation_extend_dict=None, object_extend_dict_list=None):
